@@ -33,4 +33,6 @@ public interface ComponentService {
      * @return the component
      */
     public Component getComponentById(int id);
+
+    void handle(RabbitMessage message);
 }

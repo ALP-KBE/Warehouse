@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,12 @@ public class ComponentServiceImplementation implements ComponentService {
 
     @Autowired
     ComponentRepository componentRepository;
+
+    @Autowired
+    RabbitMQSender warehouseSender;
+
+    @Autowired
+    Gson gson;
 
     @Override
     public void readCSV(MultipartFile file) {
@@ -52,9 +59,30 @@ public class ComponentServiceImplementation implements ComponentService {
     @Override
     public Component getComponentById(int id)   {
         List<Component> toReturn = List.copyOf(parseIterableToList(componentRepository.findAll()));
-        return toReturn.stream()
-                .collect(Collectors.toList())
-                .get(id);
+        try {
+            return toReturn.stream()
+                    .collect(Collectors.toList())
+                    .get(id);
+        } catch (IndexOutOfBoundsException exception) {
+            return null;
+        }
+    }
+
+    @Override
+    public void handle(RabbitMessage message) {
+        if(message.getType().equals("getComponents"))
+            if(message.getValue().equals(""))  {
+                List<Component> components=getComponents();
+                warehouseSender.send(gson.toJson(components));
+            } else  {
+                Component components=getComponentById(Integer.valueOf(message.getValue()));
+                if(components!=null)    {
+                    warehouseSender.send(gson.toJson(components));
+                }
+                else    {
+                    warehouseSender.send("IndexOutOfBoundsExceptionOops");
+                }
+            }
     }
 
     /**

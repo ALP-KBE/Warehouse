@@ -1,5 +1,7 @@
-package ALP.KBEWarehouse;
+package ALP.KBEWarehouse.RabbitMQ;
 
+import ALP.KBEWarehouse.ComponentService;
+import ALP.RabbitMessage;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

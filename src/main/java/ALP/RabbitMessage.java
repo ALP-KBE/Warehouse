@@ -1,4 +1,4 @@
-package ALP.KBEWarehouse;
+package ALP;
 
 import java.io.Serializable;
 

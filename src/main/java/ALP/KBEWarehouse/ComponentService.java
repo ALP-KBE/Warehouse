@@ -2,6 +2,7 @@ package ALP.KBEWarehouse;
 
 import java.util.List;
 
+import ALP.RabbitMessage;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ComponentService {

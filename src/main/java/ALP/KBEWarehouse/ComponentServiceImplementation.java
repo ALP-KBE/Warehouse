@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ALP.KBEWarehouse.RabbitMQ.RabbitMQSender;
+import ALP.RabbitMessage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

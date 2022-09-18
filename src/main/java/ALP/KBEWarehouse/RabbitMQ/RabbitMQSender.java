@@ -1,4 +1,4 @@
-package ALP.KBEWarehouse;
+package ALP.KBEWarehouse.RabbitMQ;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Queue;

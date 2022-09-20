@@ -14,15 +14,17 @@ public class MessagingConfig {
     static final String TOPIC_EXCHANGE_NAME = "component-exchange";
 
     @Bean
-    public Queue warehouseQueue(){
+    public Queue warehouseQueue() {
         return new Queue("warehouse-queue");
     }
 
     @Bean
-    public Queue mainQueue()    {   return new Queue("main-queue");   }
+    public Queue mainQueue() {
+        return new Queue("main-queue");
+    }
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange exchange() {
         return new TopicExchange(TOPIC_EXCHANGE_NAME);
     }
 
@@ -37,12 +39,12 @@ public class MessagingConfig {
     }
 
     @Bean
-    public MessageConverter converter(){
+    public MessageConverter converter() {
         return new Jackson2JsonMessageConverter();
     }
 
     @Bean
-    public AmqpTemplate template(ConnectionFactory connectionFactory)   {
+    public AmqpTemplate template(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(converter());
         return rabbitTemplate;

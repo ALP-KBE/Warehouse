@@ -35,7 +35,7 @@ public class ComponentServiceImplementation implements ComponentService {
         }
         componentRepository.saveAll(components);
     }
-    
+
     @Override
     public Component getComponentByName(String name) {
         List<Component> toReturn = List.copyOf(parseIterableToList(componentRepository.findAll()));
@@ -75,6 +75,13 @@ public class ComponentServiceImplementation implements ComponentService {
         if (message.getType().equals("getComponents"))
             if (message.getValue().equals("")) {
                 List<Component> components = getComponents();
+                warehouseSender.send(new RabbitMessage("component", gson.toJson(components)));
+            } else {
+                Component components = getComponentById(Integer.valueOf((String) message.getValue()));
+                if (components != null) {
+                    warehouseSender.send(new RabbitMessage("component", gson.toJson(components)));
+                } else {
+                    warehouseSender.send(new RabbitMessage("component", "IndexOutOfBoundsExceptionOops"));
                 }
             }
     }

@@ -4,21 +4,32 @@ import java.io.Serializable;
 
 public class RabbitMessage implements Serializable {
     private String type;
-    private String value;
-    public RabbitMessage()  {
-        this.type="";
-        this.value="";
+    private Serializable value;
+    private Serializable additionalField;
+
+    public RabbitMessage() {
+        this.type = "";
+        this.value = "";
     }
-    public RabbitMessage(String type, String value) {
-        this.type=type;
-        this.value=value;
+
+    public RabbitMessage(String type, Serializable value) {
+        this.type = type;
+        this.value = value;
     }
 
     public String getType() {
         return type;
     }
 
-    public String getValue() {
+    public Serializable getValue() {
         return value;
+    }
+
+    public void setAdditionalField(Serializable additionalField) {
+        this.additionalField = additionalField;
+    }
+
+    public Serializable getAdditionalField() {
+        return additionalField;
     }
 }

@@ -17,7 +17,8 @@ public class CSVParser {
     public static List<Component> parse() {
         List<Component> components = new LinkedList<>();
         try {
-            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/components.csv")).withSkipLines(1).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader("src/main/resources/components.csv"))
+                    .withSkipLines(1).build();
             components = reader.readAll().stream().map(data -> {
                 Component component = new Component();
                 component.setKomponententyp(data[0]);
@@ -41,6 +42,7 @@ public class CSVParser {
 
     /**
      * Creates a list of objects based ob the given csv file
+     * 
      * @param reader reader for the csv file
      * @return list of objects
      */

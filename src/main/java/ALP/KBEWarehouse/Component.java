@@ -1,5 +1,7 @@
 package ALP.KBEWarehouse;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,9 +11,9 @@ import javax.persistence.Table;
  * Representation of a component of a guitar
  */
 @Entity
-@Table (name = "components")
-public class Component {
-    
+@Table(name = "components")
+public class Component implements Serializable {
+
     @Column(name = "komponententyp")
     private String komponententyp;
     @Id
@@ -36,7 +38,7 @@ public class Component {
     @Column(name = "klangauswirkung")
     private String klangauswirkung;
 
-    public Component(){
+    public Component() {
         this.komponententyp = "";
         this.name = "";
         this.material = "";
@@ -51,16 +53,16 @@ public class Component {
     }
 
     public Component(String komponententyp,
-                        String name, 
-                        String material, 
-                        String herkunft, 
-                        String farbe, 
-                        String hersteller, 
-                        String form, 
-                        String gebrauchszustand, 
-                        String preis, 
-                        String verfuegbarkeit, 
-                        String klangauswirkung){
+            String name,
+            String material,
+            String herkunft,
+            String farbe,
+            String hersteller,
+            String form,
+            String gebrauchszustand,
+            String preis,
+            String verfuegbarkeit,
+            String klangauswirkung) {
         this.komponententyp = komponententyp;
         this.name = name;
         this.material = material;
@@ -153,7 +155,7 @@ public class Component {
     public void setKlangauswirkung(String klangauswirkung) {
         this.klangauswirkung = klangauswirkung;
     }
-    
+
     public String getKomponententyp() {
         return this.komponententyp;
     }
@@ -164,16 +166,16 @@ public class Component {
 
     @Override
     public String toString() {
-        return getKomponententyp() + ", " + 
-                getName() + ", " + 
-                getMaterial() + ", " + 
-                getHerkunft() + ", " + 
-                getFarbe() + ", " + 
-                getHersteller() + ", " + 
-                getForm() + ", " + 
-                getGebrauchszustand() + ", " + 
-                getPreis() + ", " + 
-                getVerfuegbarkeit() + ", " + 
+        return getKomponententyp() + ", " +
+                getName() + ", " +
+                getMaterial() + ", " +
+                getHerkunft() + ", " +
+                getFarbe() + ", " +
+                getHersteller() + ", " +
+                getForm() + ", " +
+                getGebrauchszustand() + ", " +
+                getPreis() + ", " +
+                getVerfuegbarkeit() + ", " +
                 getKlangauswirkung() + ", ";
     }
 }

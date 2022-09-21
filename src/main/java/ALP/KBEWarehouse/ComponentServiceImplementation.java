@@ -35,7 +35,7 @@ public class ComponentServiceImplementation implements ComponentService {
         }
         componentRepository.saveAll(components);
     }
-    
+
     @Override
     public Component getComponentByName(String name) {
         List<Component> toReturn = List.copyOf(parseIterableToList(componentRepository.findAll()));
@@ -59,7 +59,7 @@ public class ComponentServiceImplementation implements ComponentService {
     }
 
     @Override
-    public Component getComponentById(int id)   {
+    public Component getComponentById(int id) {
         List<Component> toReturn = List.copyOf(parseIterableToList(componentRepository.findAll()));
         try {
             return toReturn.stream()
@@ -72,27 +72,27 @@ public class ComponentServiceImplementation implements ComponentService {
 
     @Override
     public void handle(RabbitMessage message) {
-        if(message.getType().equals("getComponents"))
-            if(message.getValue().equals(""))  {
-                List<Component> components=getComponents();
-                warehouseSender.send(gson.toJson(components));
-            } else  {
-                Component components=getComponentById(Integer.valueOf(message.getValue()));
-                if(components!=null)    {
-                    warehouseSender.send(gson.toJson(components));
-                }
-                else    {
-                    warehouseSender.send("IndexOutOfBoundsExceptionOops");
+        if (message.getType().equals("getComponents"))
+            if (message.getValue().equals("")) {
+                List<Component> components = getComponents();
+                warehouseSender.send(new RabbitMessage("component", gson.toJson(components)));
+            } else {
+                Component components = getComponentById(Integer.valueOf((String) message.getValue()));
+                if (components != null) {
+                    warehouseSender.send(new RabbitMessage("component", gson.toJson(components)));
+                } else {
+                    warehouseSender.send(new RabbitMessage("component", "IndexOutOfBoundsExceptionOops"));
                 }
             }
     }
 
     /**
      * creates a list from a iterable. Usefull for parsing of componentsRepository
+     * 
      * @param toParse the iterable to parse
      * @return a list representation of the iterable
      */
-    private List<Component> parseIterableToList(Iterable<Component> toParse){
+    private List<Component> parseIterableToList(Iterable<Component> toParse) {
         List<Component> components = new LinkedList<>();
         toParse.forEach(component -> components.add(component));
         return components;

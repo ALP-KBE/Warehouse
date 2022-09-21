@@ -13,6 +13,7 @@ public class RabbitMQSender {
     private AmqpTemplate rabbitTemplate;
     @Autowired
     private Queue mainQueue;
+
     public void send(Serializable serializable) {
         rabbitTemplate.convertAndSend(mainQueue.getName(), serializable);
     }

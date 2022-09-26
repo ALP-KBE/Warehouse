@@ -15,7 +15,6 @@ public class RabbitMQReceiver {
 
     @RabbitHandler
     public void receiver(RabbitMessage message) {
-        System.out.println("message angekommen " + message.getType() + message.getValue());
         componentService.handle(message);
     }
 }

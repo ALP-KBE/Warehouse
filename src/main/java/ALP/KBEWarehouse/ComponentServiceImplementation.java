@@ -1,7 +1,6 @@
 package ALP.KBEWarehouse;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,8 +9,11 @@ import ALP.KBEWarehouse.RabbitMQ.RabbitMQSender;
 import ALP.RabbitMessage;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class ComponentServiceImplementation implements ComponentService {
@@ -25,14 +27,27 @@ public class ComponentServiceImplementation implements ComponentService {
     @Autowired
     Gson gson;
 
-    @Override
-    public void readCSV(MultipartFile file) {
-        List<Component> components = null;
+    @Value("classpath:components.csv")
+    private Resource componentsPath;
+
+    @PostConstruct
+    public void init()  {
+        componentRepository.deleteAll();
+        System.out.println("Datenbank geleert");
+        InputStream componentsStream = null;
         try {
-            components = CSVParser.parse(new FileReader(file.getOriginalFilename()));
-        } catch (FileNotFoundException e) {
+            componentsStream = componentsPath.getInputStream();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        this.readCSV(componentsStream);
+        System.out.println("Datenbank gefuellt");
+    }
+
+    @Override
+    public void readCSV(InputStream inputStream) {
+        List<Component> components = null;
+        components = CSVParser.parse(new InputStreamReader(inputStream));
         componentRepository.saveAll(components);
     }
 

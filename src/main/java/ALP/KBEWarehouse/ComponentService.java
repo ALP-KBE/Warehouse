@@ -1,17 +1,17 @@
 package ALP.KBEWarehouse;
 
+import java.io.InputStream;
 import java.util.List;
 
 import ALP.RabbitMessage;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface ComponentService {
     /**
      * Saves content of a given CSV file into the DB
      * 
-     * @param file the CSV file to be saved
+     * @param inputStream the CSV file to be saved
      */
-    public void readCSV(MultipartFile multipartFile);
+    public void readCSV(InputStream inputStream);
 
     /**
      * Gets the component with matching name

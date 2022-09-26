@@ -33,7 +33,6 @@ public class ComponentServiceImplementation implements ComponentService {
     @PostConstruct
     public void init()  {
         componentRepository.deleteAll();
-        System.out.println("Datenbank geleert");
         InputStream componentsStream = null;
         try {
             componentsStream = componentsPath.getInputStream();
@@ -41,7 +40,7 @@ public class ComponentServiceImplementation implements ComponentService {
             e.printStackTrace();
         }
         this.readCSV(componentsStream);
-        System.out.println("Datenbank gefuellt");
+        warehouseSender.send(new RabbitMessage("sendComponentsCsv", ""));
     }
 
     @Override
@@ -87,7 +86,7 @@ public class ComponentServiceImplementation implements ComponentService {
 
     @Override
     public void handle(RabbitMessage message) {
-        if (message.getType().equals("getComponents"))
+        if (message.getType().equals("getComponents")) {
             if (message.getValue().equals("")) {
                 List<Component> components = getComponents();
                 warehouseSender.send(new RabbitMessage("component", gson.toJson(components)));
@@ -99,6 +98,10 @@ public class ComponentServiceImplementation implements ComponentService {
                     warehouseSender.send(new RabbitMessage("component", "IndexOutOfBoundsExceptionOops"));
                 }
             }
+        } else if (message.getType().equals("getComponentsCsv")) {
+            List<Component> components = getComponents();
+            warehouseSender.send(new RabbitMessage("sendComponentsCsv", gson.toJson(components)));
+        }
     }
 
     /**
